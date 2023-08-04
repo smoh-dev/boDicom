@@ -12,7 +12,7 @@ boDicom operates in Windows OS environment.
 This program has been developed and tested on Windows 11.
 
 ## How to use
-![boDicom_MainWindow](https://i.ibb.co/4WRg1D1/bo-Dicom-Main-Window.png")
+![boDicom_MainWindow](https://i.ibb.co/4WRg1D1/bo-Dicom-Main-Window.png") \
 You can open .dcm file by selecting the .dcm file with File => Open (or Ctrl + O). That's all.
 
 ## Development environments
