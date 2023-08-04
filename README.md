@@ -3,16 +3,19 @@
 </p>
 <h1 align="center">boDicom</h1>
 **doDicom** is a compound word of "보다\[boda\](It means see in Korean)" and DICOM, and is a simple DICOM viewer.
+
 * Supports DICOM files.
 * Can view frame information.
 * Can check tag information.
 
 ## Requirements
 boDicom operates in Windows OS environment.
+
 This program has been developed and tested on Windows 11.
 
 ## How to use
-![boDicom_MainWindow](https://i.ibb.co/4WRg1D1/bo-Dicom-Main-Window.png") \
+![boDicom_MainWindow](https://i.ibb.co/4WRg1D1/bo-Dicom-Main-Window.png") 
+
 You can open .dcm file by selecting the .dcm file with File => Open (or Ctrl + O). That's all.
 
 ## Development environments
