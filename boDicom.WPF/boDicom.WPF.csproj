@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>boDicomIco.ico</ApplicationIcon>
+    <PackageProjectUrl>https://github.com/TheFatDuck/boDicom</PackageProjectUrl>
+    <PackageIcon>boDicomIco.png</PackageIcon>
+    <RepositoryUrl>https://github.com/TheFatDuck/boDicom</RepositoryUrl>
+    <Title>boDicom</Title>
+    <AssemblyName>boDicom</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="boDicomIco.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
+    <PackageReference Include="fo-dicom" Version="5.0.3" />
+    <PackageReference Include="fo-dicom.Codecs" Version="5.10.5" />
+    <PackageReference Include="fo-dicom.Imaging.ImageSharp" Version="5.0.3" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="boDicom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

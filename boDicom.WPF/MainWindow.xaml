@@ -1,0 +1,114 @@
+﻿<Window x:Class="boDicom.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:boDicom.WPF"
+        mc:Ignorable="d"
+        Title="boDicom" 
+        MinHeight="870" Height="870" MinWidth="650" Width="650" >
+    <Window.InputBindings>
+        <KeyBinding Key="O" Modifiers="Ctrl"  Command="{Binding OpenFileCommand}"/>
+    </Window.InputBindings>
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open" InputGestureText="Ctrl+O" Click="Click_Menu_FileOpen"/>
+                <!--<MenuItem Header="_Exit"/>-->
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Click="Click_Menu_About"/>
+            </MenuItem>
+        </Menu>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" MinHeight="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="350" MinHeight="5" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="350" MinHeight="5"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <GroupBox Header="Open Files">
+                    <ListBox x:Name="OpenedFileList" ItemsSource="{Binding OpenFiles}" BorderBrush="Transparent" SelectionChanged="Change_ListBox_OpenFiles">
+                        <ListBox.ItemTemplate >
+                            <DataTemplate >
+                                <TextBlock Text="{Binding}"/>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </GroupBox>
+            </Grid>
+            <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" />
+            <Grid Grid.Row="2">
+                <GroupBox Header="{Binding DicomImageGroupBoxHeader}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="250*" MinWidth="5"/>
+                            <ColumnDefinition Width="200*" MinWidth="5"/>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" x:Name="ImageArea" HorizontalAlignment="Stretch"/>
+                        <DataGrid Grid.Column="1" ItemsSource="{Binding DicomFrameInfo}" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Single"
+                                  SelectionChanged="Change_DataGrid_FrameInfo">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="No" IsReadOnly="True" Binding="{Binding FrameNumber}"/>
+                                <DataGridTextColumn Header="Offset" IsReadOnly="True" Binding="{Binding FrameOffset}"/>
+                                <DataGridTextColumn Header="Size" IsReadOnly="True" Binding="{Binding FrameSize}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                </GroupBox>
+            </Grid>
+            <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" VerticalAlignment="Center" ResizeDirection="Rows" />
+            <Grid Grid.Row="4">
+                <DataGrid x:Name="TagsTable" ItemsSource="{Binding DicomTags}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                          SelectionMode="Single" MouseLeftButtonUp="Click_DataGrid_Tags">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Tag" IsReadOnly="True" Binding="{Binding Tag}"/>
+                        <DataGridTextColumn Header="VR" IsReadOnly="True" Binding="{Binding VR}"/>
+                        <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding TagName}"/>
+                        <DataGridTextColumn Header="Value" IsReadOnly="True" Binding="{Binding Value}"/>
+                    </DataGrid.Columns>
+                    <DataGrid.RowDetailsTemplate>
+                        <DataTemplate>
+                            <DataGrid x:Name="SequenceItemsTable" ItemsSource="{Binding SequenceItem}" AutoGenerateColumns="False" CanUserAddRows="False"
+                                      MouseLeftButtonUp="Click_DataGrid_SequenceItems">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Index" IsReadOnly="True" Binding="{Binding Index}"/>
+                                    <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding Name}"/>
+                                </DataGrid.Columns>
+                                <DataGrid.Style>
+                                    <Style TargetType="{x:Type DataGrid}">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding SequenceItemCount}" Value="0">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.Style>
+                                <DataGrid.RowDetailsTemplate>
+                                    <DataTemplate>
+                                        <DataGrid x:Name="SequenceTagsTable" ItemsSource="{Binding Items}" AutoGenerateColumns="False" CanUserAddRows="False" 
+                                                  MouseLeftButtonUp="Click_DataGrid_SequenceTags">
+                                            <DataGrid.Columns>
+                                                <DataGridTextColumn Header="Tag" IsReadOnly="True" Binding="{Binding Tag}"/>
+                                                <DataGridTextColumn Header="VR" IsReadOnly="True" Binding="{Binding VR}"/>
+                                                <DataGridTextColumn Header="Name" IsReadOnly="True" Binding="{Binding TagName}"/>
+                                                <DataGridTextColumn Header="Value" Binding="{Binding Value}"/>
+                                            </DataGrid.Columns>
+                                        </DataGrid>
+                                    </DataTemplate>
+                                </DataGrid.RowDetailsTemplate>
+                            </DataGrid>
+                        </DataTemplate>
+                    </DataGrid.RowDetailsTemplate>
+                </DataGrid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
