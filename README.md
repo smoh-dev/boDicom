@@ -1,7 +1,9 @@
 <p align="center">
     <a href="https://github.com/TheFatDuck/boDicom" rel="noopener" target="_blank"><img width="150" src="https://i.ibb.co/dcWSx8r/bo-Dicom-Ico.png" alt="bo-Dicom-Ico" border="0" /></a>
 </p>
+
 <h1 align="center">boDicom</h1>
+
 **doDicom** is a compound word of "보다\[boda\](It means see in Korean)" and DICOM, and is a simple DICOM viewer.
 
 * Supports DICOM files.
