@@ -1,6 +1,5 @@
 ﻿using FellowOakDicom.Imaging;
 using FellowOakDicom.IO.Buffer;
-using Microsoft.Toolkit.HighPerformance.Buffers;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
