@@ -13,7 +13,42 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid>
-        <Image x:Name="DicomViewer" Stretch="Uniform"/>
+    <Grid ColumnDefinitions="180,*">
+        <!-- Left section: DicomThumbnailItems -->
+        <ScrollViewer Grid.Column="0">
+            <ItemsControl ItemsSource="{x:Bind Thumbnails}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="local:DicomThumbnailItem">
+                        <StackPanel Margin="8" Orientation="Vertical"
+                                Tapped="ThumbnailItem_Tapped">
+
+                            <Image Width="150" Height="150"
+                               Source="{x:Bind Thumbnail}" />
+
+                            <TextBlock Text="{x:Bind FileName}"
+                                   TextWrapping="Wrap"
+                                   HorizontalAlignment="Center"
+                                   FontSize="12"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+        
+        <!-- Center section: Main DICOM viewer-->
+        <Grid Grid.Column="1" Background="#111111">
+            <Border Background="#222222" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                AllowDrop="True"
+                DragOver="DicomViewer_DragOver"
+                Drop="DicomViewer_Drop">
+                <Image Grid.Column="1"
+                    x:Name="DicomViewer"
+                    AllowDrop="True"
+                    Stretch="Uniform"
+                    Width="Auto" Height="Auto"/>
+            </Border>
+        </Grid>
     </Grid>
 </Window>
