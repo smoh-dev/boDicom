@@ -33,19 +33,22 @@ public sealed partial class MainWindow : Window
     public ObservableCollection<DicomThumbnailItem> Thumbnails { get; set; } 
         = new ObservableCollection<DicomThumbnailItem>();
 
+    public ObservableCollection<DicomTagItem> DicomTags { get; set; }
+        = new ObservableCollection<DicomTagItem>();
+
     public MainWindow()
     {
         InitializeComponent();
 
-        // HWND 가져오기
+        // Get HWND
         var hWnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
         var windowId = Win32Interop.GetWindowIdFromWindow(hWnd);
 
-        // 정적 메서드로 AppWindow 가져오기
+        // Get AppWindow
         AppWindow appWindow = AppWindow.GetFromWindowId(windowId);
 
-        // 창 크기 설정
-        appWindow.Resize(new SizeInt32(1100, 900));
+        // Set window size
+        appWindow.Resize(new SizeInt32(1600, 900));
         appWindow.Title = "boDicom";
 
         //LoadDicomFile();
@@ -171,6 +174,7 @@ public sealed partial class MainWindow : Window
             _image = new DicomImage(dicomFile.Dataset);
             _currentFrameIndex = 0;
 
+            LoadDicomTags(dicomFile.Dataset);
             ShowDicomFrame(_currentFrameIndex);
         }
         catch (Exception ex)
@@ -190,6 +194,74 @@ public sealed partial class MainWindow : Window
         };
 
         await dialog.ShowAsync();
+    }
+
+    private void LoadDicomTags(DicomDataset dataset)
+    {
+        DicomTags.Clear();
+
+        foreach (var element in dataset)
+        {
+            DicomTags.Add(CreateTagNode(element));
+        }
+    }
+
+    private DicomTagItem CreateTagNode(DicomItem item)
+    {
+        var tag = item.Tag;
+        string tagName = tag.DictionaryEntry.Name;
+        string tagId = tag.Group.ToString("X4") + "," + tag.Element.ToString("X4");
+
+        var node = new DicomTagItem();
+
+        if (item is DicomSequence seq)
+        {
+            // Foldable SQ
+            node.Display = $"{tagId} {tagName} (SQ)";
+
+            int index = 0;
+            foreach (var dataset in seq.Items)
+            {
+                var child = new DicomTagItem
+                {
+                    Display = $"Item {index}"
+                };
+
+                foreach (var sub in dataset)
+                {
+                    child.Children.Add(CreateTagNode(sub));
+                }
+
+                node.Children.Add(child);
+                index++;
+            }
+        }
+        else if (tag == DicomTag.PixelData)
+        {
+            // Hide actual PixelData value
+            node.Display = $"{tagId} {tagName} = <PixelData>";
+        }
+        else if (item is DicomElement element)
+        {
+            // Normal Element
+            string value;
+            try
+            {
+                value = element.Get<string>();
+            }
+            catch
+            {
+                value = "";
+            }
+
+            node.Display = $"{tagId} {tagName} = {value}";
+        }
+        else
+        {
+            node.Display = $"{tagId} {tagName}";
+        }
+
+        return node;
     }
 
     private async Task LoadDicomToList(StorageFile file)
@@ -237,7 +309,6 @@ public sealed partial class MainWindow : Window
 
         return buffer;
     }
-
 
     private async void ThumbnailItem_Tapped(object sender, TappedRoutedEventArgs e)
     {

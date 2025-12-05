@@ -13,7 +13,7 @@
         <MicaBackdrop />
     </Window.SystemBackdrop>
 
-    <Grid ColumnDefinitions="180,*">
+    <Grid ColumnDefinitions="180, *, 450">
         <!-- Left section: DicomThumbnailItems -->
         <ScrollViewer Grid.Column="0">
             <ItemsControl ItemsSource="{x:Bind Thumbnails}">
@@ -50,5 +50,18 @@
                     Width="Auto" Height="Auto"/>
             </Border>
         </Grid>
+
+        <!-- Right section: Tag Viewer -->
+        <ScrollViewer Grid.Column="2" Background="#1b1b1b">
+            <TreeView ItemsSource="{x:Bind DicomTags}">
+                <TreeView.ItemTemplate>
+                    <DataTemplate x:DataType="local:DicomTagItem">
+                        <TreeViewItem 
+                        Content="{x:Bind Display}" 
+                        ItemsSource="{x:Bind Children}" />
+                    </DataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </ScrollViewer>
     </Grid>
 </Window>
